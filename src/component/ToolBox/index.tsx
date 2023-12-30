@@ -1,7 +1,14 @@
+"use-client";
+
 import styles from "./index.module.css";
 import { Colours } from "@/constant";
+import { useSelector } from "react-redux";
 const ToolBox = () => {
   function upadateBrushSize(e: any): void {}
+
+  const activeMenuItem: any = useSelector(
+    (state: any) => state.menu.activeMenuItem
+  );
 
   return (
     <div className={styles.toolboxContainer}>
@@ -36,7 +43,7 @@ const ToolBox = () => {
       </div>
 
       <div className={styles.toolItem}>
-        <h4 className={styles.toolText}>Brush Size </h4>
+        <h4 className={styles.toolText}>Brush Size</h4>
         <div className={styles.itemContainer}>
           <input
             type="range"
