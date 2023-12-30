@@ -9,19 +9,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./index.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import cx from "classnames";
 import { MENU_ITEMS } from "@/constant";
 import { menuItemClick, actionItemClick } from "@/Redux/slice/menuSlice";
 
 const Menu = () => {
   const dispatch = useDispatch();
+  const activeMenuItem: any = useSelector(
+    (state: any) => state.menu.activeMenuItem
+  );
   const handleMenuItem = (itemName: any): void => {
     dispatch(menuItemClick(itemName));
   };
   return (
     <div className={styles.menuContainer}>
       <div
-        className={styles.iconWrapper}
+        className={cx(styles.iconWrapper, {
+          [styles.active]: activeMenuItem === MENU_ITEMS.PENCIL,
+        })}
         onClick={() => {
           handleMenuItem(MENU_ITEMS.PENCIL);
         }}
@@ -30,7 +36,9 @@ const Menu = () => {
       </div>
 
       <div
-        className={styles.iconWrapper}
+        className={cx(styles.iconWrapper, {
+          [styles.active]: activeMenuItem === MENU_ITEMS.ERASER,
+        })}
         onClick={() => {
           handleMenuItem(MENU_ITEMS.ERASER);
         }}
