@@ -19,7 +19,7 @@ const ToolBox = () => {
   const activeMenuItem: any = useSelector(
     (state: any) => state.menu.activeMenuItem
   );
-  const { color }: any = useSelector(
+  const { color, size }: any = useSelector(
     (state: any) => state.toolbox[activeMenuItem]
   );
   const showStrokeToolOption = activeMenuItem === MENU_ITEMS.PENCIL;
@@ -99,6 +99,7 @@ const ToolBox = () => {
               max={10}
               step={1}
               onChange={upadateBrushSize}
+              value={size}
             />
           </div>
         </div>
