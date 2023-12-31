@@ -3,11 +3,14 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { COLOURS, MENU_ITEMS } from "@/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { actionItemClick } from "@/Redux/slice/menuSlice";
+import { log } from "console";
 
 const Board = () => {
   const canvasRef = useRef();
   const shouldDraw = useRef(false);
   const dispatch = useDispatch();
+  const drawHistory = useRef<Array<any>>([]);
+  const historyPointer = useRef<number>(0);
   const { activeMenuItem, actionMenuItem } = useSelector(
     (state: any) => state.menu
   );
@@ -29,6 +32,15 @@ const Board = () => {
       anchor.href = URL;
       anchor.download = "sketch.jpg";
       anchor.click();
+    } else if (actionMenuItem === MENU_ITEMS.UNDO) {
+      if (historyPointer.current > 0) historyPointer.current -= 1;
+      const imageData = drawHistory.current[historyPointer.current];
+      ctx.putImageData(imageData, 0, 0);
+    } else if (actionMenuItem === MENU_ITEMS.REDO) {
+      if (historyPointer.current < drawHistory.current.length - 1)
+        historyPointer.current += 1;
+      const imageData = drawHistory.current[historyPointer.current];
+      ctx.putImageData(imageData, 0, 0);
     }
     dispatch(actionItemClick(null));
   }, [actionMenuItem]);
@@ -69,6 +81,9 @@ const Board = () => {
     };
     const handleMouseUp = (e: any) => {
       shouldDraw.current = false;
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      drawHistory.current.push(imageData);
+      historyPointer.current = drawHistory.current.length - 1;
     };
     const drawLine = (x: any, y: any) => {
       ctx.lineTo(x, y);
