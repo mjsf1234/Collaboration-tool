@@ -22,6 +22,11 @@ const Menu = () => {
   const handleMenuItem = (itemName: any): void => {
     dispatch(menuItemClick(itemName));
   };
+
+  const handleActionItemClick = (itemName: any) => {
+    dispatch(actionItemClick(itemName));
+  };
+
   return (
     <div className={styles.menuContainer}>
       <div
@@ -49,7 +54,7 @@ const Menu = () => {
       <div
         className={styles.iconWrapper}
         onClick={() => {
-          handleMenuItem(MENU_ITEMS.UNDO);
+          handleActionItemClick(MENU_ITEMS.UNDO);
         }}
       >
         <FontAwesomeIcon icon={faRotateLeft} className={styles.icon} />
@@ -58,7 +63,7 @@ const Menu = () => {
       <div
         className={styles.iconWrapper}
         onClick={() => {
-          handleMenuItem(MENU_ITEMS.REDO);
+          handleActionItemClick(MENU_ITEMS.REDO);
         }}
       >
         <FontAwesomeIcon icon={faRotateRight} className={styles.icon} />
@@ -67,7 +72,7 @@ const Menu = () => {
       <div
         className={styles.iconWrapper}
         onClick={() => {
-          handleMenuItem(MENU_ITEMS.DOWNLOAD);
+          handleActionItemClick(MENU_ITEMS.DOWNLOAD);
         }}
       >
         <FontAwesomeIcon icon={faFileArrowDown} className={styles.icon} />
