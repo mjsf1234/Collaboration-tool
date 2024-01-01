@@ -58,7 +58,11 @@ const Board = () => {
 
     const handleChangeConfig = (config: any) => {
       console.log("config", config);
-      changeConfig(config.color, config.size);
+      let color_ =
+        config.currentMenuItem === MENU_ITEMS.ERASER
+          ? COLOURS.WHITE
+          : config.color;
+      changeConfig(color_, config.size);
     };
     changeConfig(color, size);
     socket.on("changeConfig", handleChangeConfig);

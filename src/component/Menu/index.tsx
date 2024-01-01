@@ -13,18 +13,33 @@ import { useDispatch, useSelector } from "react-redux";
 import cx from "classnames";
 import { MENU_ITEMS } from "@/constant";
 import { menuItemClick, actionItemClick } from "@/Redux/slice/menuSlice";
+import socket from "@/socket";
 
 const Menu = () => {
   const dispatch = useDispatch();
-  const activeMenuItem: any = useSelector(
-    (state: any) => state.menu.activeMenuItem
+  const { activeMenuItem, actionMenuItem } = useSelector(
+    (state: any) => state.menu
   );
+  const { color, size }: any = useSelector(
+    (state: any) => state.toolbox[activeMenuItem]
+  );
+
   const handleMenuItem = (itemName: any): void => {
     dispatch(menuItemClick(itemName));
+    socket.emit("changeConfig", {
+      currentMenuItem: itemName,
+      color,
+      size: size,
+    });
   };
 
   const handleActionItemClick = (itemName: any) => {
     dispatch(actionItemClick(itemName));
+    socket.emit("changeConfig", {
+      currentMenuItem: itemName,
+      color,
+      size: size,
+    });
   };
 
   return (
