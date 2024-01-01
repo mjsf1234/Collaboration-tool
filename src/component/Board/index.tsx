@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionItemClick } from "@/Redux/slice/menuSlice";
 import socket from "@/socket";
 const Board = () => {
-  const canvasRef = useRef();
+  const canvasRef: any = useRef();
   const shouldDraw = useRef(false);
   const dispatch = useDispatch();
   const drawHistory = useRef<Array<any>>([]);
