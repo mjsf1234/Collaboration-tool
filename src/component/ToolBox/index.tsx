@@ -5,15 +5,18 @@ import styles from "./index.module.css";
 import { COLOURS, MENU_ITEMS } from "@/constant";
 import { useDispatch, useSelector } from "react-redux";
 import cx from "classnames";
+import socket from "@/socket";
 const ToolBox = () => {
   const dispatch = useDispatch();
 
-  const updateColour = (selectedColor: any) => {
-    dispatch(changeColour({ item: activeMenuItem, color: selectedColor }));
+  const updateColour = (newColor: any) => {
+    dispatch(changeColour({ item: activeMenuItem, color: newColor }));
+    socket.emit("changeConfig", { color: newColor, size });
   };
 
   function upadateBrushSize(e: any): void {
     dispatch(changeBrushSize({ item: activeMenuItem, size: e.target.value }));
+    socket.emit("changeConfig", { color, size: e.target.value });
   }
 
   const activeMenuItem: any = useSelector(

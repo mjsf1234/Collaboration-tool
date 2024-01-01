@@ -51,12 +51,21 @@ const Board = () => {
       canvas && canvas.getContext("2d") ? canvas.getContext("2d") : null;
     ctx.str;
 
-    const changeConfig = () => {
+    const changeConfig = (color: any, size: any) => {
       ctx.strokeStyle = color;
       ctx.lineWidth = size;
     };
-    changeConfig();
-    console.log("size", size, color);
+
+    const handleChangeConfig = (config: any) => {
+      console.log("config", config);
+      changeConfig(config.color, config.size);
+    };
+    changeConfig(color, size);
+    socket.on("changeConfig", handleChangeConfig);
+
+    return () => {
+      socket.off("changeConfig", handleChangeConfig);
+    };
   }, [color, size]);
 
   //mounting
