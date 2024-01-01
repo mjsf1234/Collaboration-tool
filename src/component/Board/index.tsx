@@ -3,8 +3,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { COLOURS, MENU_ITEMS } from "@/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { actionItemClick } from "@/Redux/slice/menuSlice";
-import { log } from "console";
-
+import socket from "@/socket";
 const Board = () => {
   const canvasRef = useRef();
   const shouldDraw = useRef(false);
@@ -78,25 +77,41 @@ const Board = () => {
     const handleMouseDown = (e: any) => {
       shouldDraw.current = true;
       beginPath(e.clientX, e.clientY);
+      socket.emit("beginPath", { x: e.clientX, y: e.clientY });
     };
+
     const handleMouseUp = (e: any) => {
       shouldDraw.current = false;
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       drawHistory.current.push(imageData);
       historyPointer.current = drawHistory.current.length - 1;
     };
+
     const drawLine = (x: any, y: any) => {
       ctx.lineTo(x, y);
       ctx.stroke();
     };
+
     const handleMouseMove = (e: any) => {
       if (!shouldDraw.current) return;
       drawLine(e.clientX, e.clientY);
+      socket.emit("drawLine", { x: e.clientX, y: e.clientY });
     };
 
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mouseup", handleMouseUp);
     canvas.addEventListener("mousemove", handleMouseMove);
+
+    const handleBeginPath = (args: any) => {
+      beginPath(args.x, args.y);
+    };
+
+    const handleDrawPath = (args: any) => {
+      drawLine(args.x, args.y);
+    };
+
+    socket.on("beginPath", handleBeginPath);
+    socket.on("drawLine", handleDrawPath);
 
     //cleanup function
 
